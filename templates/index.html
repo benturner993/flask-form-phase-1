@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div style="text-align: center; padding: 75px 0; background-image: url('static/online-Person-sleeping-with-a-dog.png'); background-size: cover; background-position: center 45%; color: #0d1846; position: relative; margin-top: -20px; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);">
+<div style="text-align: center; padding: 75px 0; background-image: url('static/online-Person-sleeping-with-a-dog.png'); background-size: cover; background-position: center 45%; color: white; position: relative; margin-top: -20px; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);">
     <h3 style="margin: 0; padding: 0; width: 100%;">Welcome to Retain and Reward</h3>
     <h1 style="margin: 0; padding: 0; width: 100%;">Your Hub for Reactive Retention</h1>
 </div>
@@ -66,15 +66,16 @@
                 </select>
             </form>
         </div>
-        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start;">
-        <p>Annual Subs incl IPT:</p>
-            <button onclick="displayAnnualSubs()" style="margin-bottom: 5px;">Display</button>
-        <p id="annual-subs-display"></p>
+        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 20px;">
+            <p>Annual Subs incl IPT:</p>
+            <p id="annual-subs-display"></p>
         </div>
     </div>
 </div>
-
-<button type="button" onclick="submitForm()" style="position: fixed; bottom: 35px; right: 20px;">Submit</button>
+<div style="display: flex; justify-content: flex-end; margin-right: 10vh;">
+    <button onclick="displayAnnualSubs()" style="margin-bottom: 5px">Calculate</button>
+    <button type="button" onclick="submitForm()" style="margin-bottom: 5px; margin-left: 10px;">Submit</button>
+</div>
 
 <script>
     const formInputs = document.querySelectorAll('.input-field');
@@ -104,14 +105,16 @@
     }
 
     function displayAnnualSubs() {
+        const registrationNumber = document.getElementById('registration-number').value;
         const annualSubsInput = document.getElementById('annual-subs').value;
+        const currentUrl = window.location.href; // Get the current URL
 
         fetch('/multiply', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'annual-subs': annualSubsInput })
+            body: JSON.stringify({ 'registration-number': registrationNumber, 'annual-subs': annualSubsInput, 'url': currentUrl }) // Include 'registration-number' in the JSON data
         })
         .then(response => response.json())
         .then(data => {

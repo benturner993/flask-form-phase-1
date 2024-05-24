@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import csv
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -37,13 +38,22 @@ def submit_form():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-# New route to multiply annual subs by 5
+# New route to multiply annual subs by 5 and save to CSV
 @app.route('/multiply', methods=['POST'])
 def multiply_annual_subs():
     try:
         data = request.json
+        registration_number = data['registration-number']
         annual_subs = float(data['annual-subs'])
         result = annual_subs * 5
+        url = data.get('url')  # Get the URL from the request data
+
+        # Writing data to CSV
+        csv_file_path = os.path.join('data', 'calculated_data.csv')
+        os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
+        with open(csv_file_path, 'a', newline='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow([registration_number, result, datetime.now(), url])  # Include URL in the CSV row
         return jsonify({'result': result})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
