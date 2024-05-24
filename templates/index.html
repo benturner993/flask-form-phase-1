@@ -1,71 +1,74 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div style="text-align: center; padding: 75px 0; background-image: url('static/online-Person-sleeping-with-a-dog.png'); background-size: cover; background-position: center 45%; color: #0d1846; position: relative; margin-top: -20px; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);">
+    <h1 style="margin: 0; padding: 0; width: 100%;">Your Hub for Reactive Retention</h1>
+</div>
+
 <div style="width: 100%; height: 80vh; display: flex; justify-content: center; align-items: center;">
-    <div style="max-width: 90%; width: 100%;">
-        <div style="margin: 0; padding: 0; display: flex; justify-content: space-between;">
-            <div style="width: 70vw;">
-                <form id="user-form" style="margin-top: 10px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(2, 45%); gap: 5%; position: relative;">
-                    <input type="text" id="registration-number" name="registration-number" placeholder="Registration Number" class="input-field">
-                    <input type="date" id="renewal-date" name="renewal-date" placeholder="Renewal Date" class="input-field">
-                    <input type="number" id="annual-subs" name="annual-subs" placeholder="Total Annual Subs inl IPT" class="input-field">
-                    <select id="color-segment" name="color-segment" class="input-field">
-                        <option value="" disabled selected>Choose Colour Segment</option>
-                        <option value="Red">Red</option>
-                        <option value="Green">Green</option>
-                        <option value="Amber">Amber</option>
-                        <option value="New">New</option>
-                        <option value="Grey">Grey</option>
-                        <option value="Blue">Blue</option>
-                        <option value="Purple">Purple</option>
-                        <option value="Missing">Missing</option>
-                    </select>
-                    <select id="claims-paid" name="claims-paid" class="input-field">
-                        <option value="" disabled selected>Value of Claims Paid in Last Year?</option>
-                        <option value="Less Than £500">Less Than £500</option>
-                        <option value="Between £500 and £1000">Between £500 and £1000</option>
-                        <option value="More Than £1000">More Than £1000</option>
-                    </select>
-                    <select id="payment-frequency" name="payment-frequency" class="input-field">
-                        <option value="" disabled selected>What is the payment frequency?</option>
-                        <option value="Monthly">Monthly</option>
-                        <option value="Annually">Annually</option>
-                    </select>
-                    <select id="months-arrears" name="months-arrears" class="input-field">
-                        <option value="" disabled selected>Number of months in arrears?</option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <select id="months-free-last" name="months-free-last" class="input-field">
-                        <option value="" disabled selected>Did the member receive a Months Free Last Year?</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                    <select id="months-free-this" name="months-free-this" class="input-field">
-                        <option value="" disabled selected>Number of months free in this contract year?</option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <select id="offer-accepted" name="offer-accepted" class="input-field">
-                        <option value="" disabled selected>Offer Accepted?</option>
-                        <option value="Not Eligible for Offer">Not Eligible for Offer</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                        <option value="Maybe">Maybe</option>
-                        <option value="Yes - With STM Override">Yes - With STM Override</option>
-                        <option value="Maybe - With STM Override">Maybe - With STM Override</option>
-                    </select>
-                </form>
-            </div>
-            <div style="background-color: #ccc; padding: 20px; width: 25vw; margin-bottom: 5px;"> <!-- Grey box container -->
-                <p>Annual Subs inl IPT:</p>
-                <button onclick="displayAnnualSubs()" style="margin-bottom: 5px;">Display</button>
-                <p id="annual-subs-display"></p>
-            </div>
+    <div style="max-width: 90%; width: 100%; display: flex; justify-content: space-between;">
+        <div style="width: 70vw;">
+            <form id="user-form" style="margin-top: 10px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(2, 45%); gap: 5%; position: relative;">
+                <input type="text" id="registration-number" name="registration-number" placeholder="Registration Number" class="input-field">
+                <input type="date" id="renewal-date" name="renewal-date" placeholder="Renewal Date" class="input-field">
+                <input type="number" id="annual-subs" name="annual-subs" placeholder="Total Annual Subs incl IPT" class="input-field">
+                <select id="color-segment" name="color-segment" class="input-field">
+                    <option value="" disabled selected>Choose Colour Segment</option>
+                    <option value="Red">Red</option>
+                    <option value="Green">Green</option>
+                    <option value="Amber">Amber</option>
+                    <option value="New">New</option>
+                    <option value="Grey">Grey</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Purple">Purple</option>
+                    <option value="Missing">Missing</option>
+                </select>
+                <select id="claims-paid" name="claims-paid" class="input-field">
+                    <option value="" disabled selected>Value of Claims Paid in Last Year?</option>
+                    <option value="Less Than £500">Less Than £500</option>
+                    <option value="Between £500 and £1000">Between £500 and £1000</option>
+                    <option value="More Than £1000">More Than £1000</option>
+                </select>
+                <select id="payment-frequency" name="payment-frequency" class="input-field">
+                    <option value="" disabled selected>What is the payment frequency?</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Annually">Annually</option>
+                </select>
+                <select id="months-arrears" name="months-arrears" class="input-field">
+                    <option value="" disabled selected>Number of months in arrears?</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <select id="months-free-last" name="months-free-last" class="input-field">
+                    <option value="" disabled selected>Did the member receive a Months Free Last Year?</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <select id="months-free-this" name="months-free-this" class="input-field">
+                    <option value="" disabled selected>Number of months free in this contract year?</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <select id="offer-accepted" name="offer-accepted" class="input-field">
+                    <option value="" disabled selected>Offer Accepted?</option>
+                    <option value="Not Eligible for Offer">Not Eligible for Offer</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Maybe">Maybe</option>
+                    <option value="Yes - With STM Override">Yes - With STM Override</option>
+                    <option value="Maybe - With STM Override">Maybe - With STM Override</option>
+                </select>
+            </form>
+        </div>
+        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start;">
+        <p>Annual Subs incl IPT:</p>
+            <button onclick="displayAnnualSubs()" style="margin-bottom: 5px;">Display</button>
+        <p id="annual-subs-display"></p>
         </div>
     </div>
 </div>
@@ -119,6 +122,13 @@
         })
         .catch(error => console.error('Error:', error));
     }
+
+    // Adjust grey box height to match the form
+    window.onload = function() {
+        const userForm = document.getElementById('user-form');
+        const greyBox = document.getElementById('grey-box');
+        greyBox.style.height = `${userForm.offsetHeight}px`;
+    };
 </script>
 
 <style>
