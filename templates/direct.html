@@ -66,7 +66,7 @@
                 </select>
             </form>
         </div>
-        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 20px; border: 2px solid transparent;">
+        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent;">
             <p>Offer: <span id="annual-subs-display" style="font-weight: bold;"></span></p>
             <p>Value: <span id="value" style="font-weight: bold;"></span></p>
             <p>Total Payable: <span id="total_payable" style="font-weight: bold;"></span></p>
@@ -162,6 +162,8 @@
         font-size: 0.8em;
         color: #777;
         font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
+        border: none; /* Remove the border */
+        border-bottom: 1px solid #777; /* Add bottom border */
     }
 
     select.input-field {
@@ -170,6 +172,8 @@
         font-size: 0.8em;
         color: #777;
         font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
+        border: none; /* Remove the border */
+        border-bottom: 1px solid #777; /* Add bottom border */
     }
 
     .input-field:not(:last-child) {
