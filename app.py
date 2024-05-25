@@ -50,7 +50,7 @@ def multiply_annual_subs():
         # collect input information
         data = request.json
         registration = float(data['registration-number'])
-        renewal = data['renewal-date']
+        renewal = datetime.strptime(data['renewal-date'], '%Y-%m-%d')
         payment_frequency = data['payment-frequency']
         total_annual_subs = float(data['annual-subs'])
         arrears = float(data['months-arrears'])
