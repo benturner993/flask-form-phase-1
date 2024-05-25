@@ -74,7 +74,7 @@
     </div>
 </div>
 <div style="display: flex; justify-content: flex-end; margin-right: 10vh;">
-    <button onclick="displayAnnualSubs()" style="margin-bottom: 5px">Calculate</button>
+    <button onclick="calculateOffer()" style="margin-bottom: 5px">Calculate</button>
     <button type="button" onclick="submitForm()" style="margin-bottom: 5px; margin-left: 10px;">Submit</button>
     <button type="button" onclick="clearForm()" style="margin-bottom: 5px; margin-left: 10px;">Clear</button>
 </div>
@@ -105,14 +105,14 @@
         .catch(error => console.error('Error:', error));
     }
 
-    function displayAnnualSubs() {
+    function calculateOffer() {
         const formData = {};
         formInputs.forEach(input => {
             formData[input.name] = input.value.trim();
         });
         formData.url = window.location.href; // Get the current URL
 
-        fetch('/multiply', {
+        fetch('/calculate_offer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -42,8 +42,8 @@ def submit_form():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@app.route('/multiply', methods=['POST'])
-def multiply_annual_subs():
+@app.route('/calculate_offer', methods=['POST'])
+def calculate_offer():
     try:
         # collect input information
         data = request.json
