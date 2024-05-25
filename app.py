@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import csv
 import os
 from datetime import datetime
+from calculator import calculate
 
 app = Flask(__name__)
 
@@ -9,13 +10,11 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# Route for handling form submission
 @app.route('/submit', methods=['POST'])
 def submit_form():
     try:
         data = request.json
 
-        # Extracting data from JSON
         registration_number = data['registration-number']
         renewal_date = data['renewal-date']
         annual_subs = data['annual-subs']
@@ -27,7 +26,6 @@ def submit_form():
         months_free_this = data['months-free-this']
         offer_accepted = data['offer-accepted']
 
-        # Writing data to CSV
         csv_file_path = os.path.join('data', 'user_data.csv')
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         with open(csv_file_path, 'a', newline='') as csvfile:
@@ -38,22 +36,35 @@ def submit_form():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-# New route to multiply annual subs by 5 and save to CSV
 @app.route('/multiply', methods=['POST'])
 def multiply_annual_subs():
     try:
         data = request.json
-        registration_number = data['registration-number']
-        annual_subs = float(data['annual-subs'])
-        result = annual_subs * 5
-        url = data.get('url')  # Get the URL from the request data
 
-        # Writing data to CSV
+        total_annual_subs = float(data['annual-subs'])
+        registration = float(data['registration-number'])
+        arrears = float(data['months-arrears'])
+        financial_distress = 0
+        mf_last_year = str(data['months-free-last'])
+        mf_this_year = float(data['months-free-this'])
+        segment = str(data['color-segment'])
+        claims_paid = str(data['claims-paid'])
+
+        result = calculate(total_annual_subs,
+                           registration,
+                           arrears,
+                           financial_distress,
+                           mf_last_year,
+                           mf_this_year,
+                           segment,
+                           claims_paid)
+        url = data.get('url')
+
         csv_file_path = os.path.join('data', 'calculated_data.csv')
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         with open(csv_file_path, 'a', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
-            csvwriter.writerow([registration_number, result, datetime.now(), url])  # Include URL in the CSV row
+            csvwriter.writerow([registration, result, datetime.now(), url])
         return jsonify({'result': result})
     except Exception as e:
         return jsonify({'error': str(e)}), 400

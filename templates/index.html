@@ -67,8 +67,10 @@
             </form>
         </div>
         <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 20px;">
-            <p>Annual Subs incl IPT:</p>
+            <p>Offer:</p>
             <p id="annual-subs-display"></p>
+            <p>Value:</p>
+            <p>Total Payable:</p>
         </div>
     </div>
 </div>
@@ -105,16 +107,18 @@
     }
 
     function displayAnnualSubs() {
-        const registrationNumber = document.getElementById('registration-number').value;
-        const annualSubsInput = document.getElementById('annual-subs').value;
-        const currentUrl = window.location.href; // Get the current URL
+        const formData = {};
+        formInputs.forEach(input => {
+            formData[input.name] = input.value.trim();
+        });
+        formData.url = window.location.href; // Get the current URL
 
         fetch('/multiply', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'registration-number': registrationNumber, 'annual-subs': annualSubsInput, 'url': currentUrl }) // Include 'registration-number' in the JSON data
+            body: JSON.stringify(formData)
         })
         .then(response => response.json())
         .then(data => {
@@ -127,7 +131,6 @@
         .catch(error => console.error('Error:', error));
     }
 
-    // Adjust grey box height to match the form
     window.onload = function() {
         const userForm = document.getElementById('user-form');
         const greyBox = document.getElementById('grey-box');
@@ -136,18 +139,16 @@
 </script>
 
 <style>
-    /* Additional form styling */
     .input-field {
         padding: 10px;
         width: 100%;
-        box-sizing: border-box; /* Ensure padding and border are included in the width and height */
-        height: 40px; /* Set a consistent height for all input fields */
+        box-sizing: border-box;
+        height: 40px;
     }
 
-    /* Adjust width for select element */
     select.input-field {
-        width: 100%; /* Adjust as needed based on appearance */
-        height: 40px; /* Ensure height matches other input fields */
+        width: 100%;
+        height: 40px;
     }
 
     .input-field:not(:last-child) {
