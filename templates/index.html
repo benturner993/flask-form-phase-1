@@ -3,8 +3,8 @@
 {% block content %}
 
 <div style="text-align: center; padding: 75px 0; background-color: #f1efeb; color: black; position: relative; margin-top: -20px; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);">
-    <h3 style="margin: 0; padding: 0; width: 100%;">Welcome to Retain and Reward</h3>
-    <h1 style="margin: 0; padding: 0; width: 100%;">Your Hub for Reactive Retention</h1>
+    <h3 style="margin: 0; padding: 0; width: 100%;">Welcome to Reward and Retain</h3>
+    <h1 style="margin: 0; padding: 0; width: 100%;">Your Hub for Direct Reactive Retention</h1>
 </div>
 
 <div style="width: 100%; height: 50vh; display: flex; justify-content: center; align-items: center;">
@@ -45,8 +45,8 @@
                 </select>
                 <select id="months-free-last" name="months-free-last" class="input-field">
                     <option value="" disabled selected>Did the member receive a Months Free Last Year?</option>
-                    <option value="Yes">Yes</option>
                     <option value="No">No</option>
+                    <option value="Yes">Yes</option>
                 </select>
                 <select id="months-free-this" name="months-free-this" class="input-field">
                     <option value="" disabled selected>Number of months free in this contract year?</option>
@@ -67,10 +67,9 @@
             </form>
         </div>
         <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 20px;">
-            <p>Offer:</p>
-            <p id="annual-subs-display"></p>
-            <p>Value:</p>
-            <p>Total Payable:</p>
+                    <p>Offer:<span id="annual-subs-display"></span></p>
+            <p>Value:<span id="value"></span></p>
+            <p>Total Payable: <span id="total_payable"></span></p>
         </div>
     </div>
 </div>
@@ -124,6 +123,8 @@
         .then(data => {
             if (data.result !== undefined) {
                 annualSubsDisplay.textContent = data.result;
+                document.getElementById('total_payable').textContent = data.total_payable;
+                document.getElementById('value').textContent = data.value;
             } else {
                 annualSubsDisplay.textContent = 'Error: ' + data.error;
             }

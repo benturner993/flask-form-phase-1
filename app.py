@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import csv
 import os
 from datetime import datetime
-from calculator import calculate
+from calculator import calculate_months, calculate_value, eligibility
 
 app = Flask(__name__)
 
@@ -36,36 +36,49 @@ def submit_form():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+
 @app.route('/multiply', methods=['POST'])
 def multiply_annual_subs():
     try:
+        # collect input information
         data = request.json
-
-        total_annual_subs = float(data['annual-subs'])
         registration = float(data['registration-number'])
+        renewal = data['renewal-date']
+        payment_frequency = data['payment-frequency']
+        total_annual_subs = float(data['annual-subs'])
         arrears = float(data['months-arrears'])
         financial_distress = 0
         mf_last_year = str(data['months-free-last'])
         mf_this_year = float(data['months-free-this'])
         segment = str(data['color-segment'])
         claims_paid = str(data['claims-paid'])
-
-        result = calculate(total_annual_subs,
-                           registration,
-                           arrears,
-                           financial_distress,
-                           mf_last_year,
-                           mf_this_year,
-                           segment,
-                           claims_paid)
         url = data.get('url')
 
+        # calculator number of eligible months free
+        months_free = calculate_months(total_annual_subs,
+                                  registration,
+                                  arrears,
+                                  financial_distress,
+                                  mf_last_year,
+                                  mf_this_year,
+                                  segment,
+                                  claims_paid)
+
+        # return eligibility (offer_bin), and the written output (offer_str)
+        offer_bin, offer_str = eligibility(months_free)
+
+        # calculate the total payable amount and the value of the discount
+        total_payable = calculate_value(total_annual_subs, payment_frequency, renewal, months_free)
+        value = total_annual_subs - total_payable
+
+        # store outcomes and return
         csv_file_path = os.path.join('data', 'calculated_data.csv')
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         with open(csv_file_path, 'a', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
-            csvwriter.writerow([registration, result, datetime.now(), url])
-        return jsonify({'result': result})
+            csvwriter.writerow([registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url])
+
+        return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': value, 'total_payable': total_payable})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 

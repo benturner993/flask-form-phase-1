@@ -73,12 +73,18 @@ def calculate_months(total_annual_subs, registration, arrears, financial_distres
         return 0
     if claims_paid == "Less Than £500":
         months_free = non_claimer_lookup.get(segment, 0)
-        print(f"Result from non_claimer_lookup: {result}")
+        print(f"Result from non_claimer_lookup: {months_free}")
         return months_free
     else:
         months_free = claimer_lookup.get(segment, 0)
-        print(f"Result from claimer_lookup: {result}")
+        print(f"Result from claimer_lookup: {months_free}")
         return months_free
+
+def eligibility(months_free):
+    if months_free==0:
+        return 0, "Not Eligible"
+    else:
+        return 1, f"Eligible for {months_free} Month(s) Discount"
 
 def calculate_value(total_annual_subs, payment_frequency, renewal, months_free):
 
