@@ -54,7 +54,7 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
             </select>
-            <select id="offer-accepted" name="offer-accepted" class="input-field" style="font-size: 0.8em;">
+            <select id="offer-accepted" name="offer-accepted" class="input-field" style="font-size: 0.8em;" required>
                 <option value="" disabled selected hidden>Offer was Accepted?</option>
                 <option value="Not Eligible for Offer">Not Eligible for Offer</option>
                 <option value="Yes">Yes</option>
@@ -76,7 +76,7 @@
 
 <div style="display: flex; justify-content: flex-end; padding-right: 20px;">
     <button onclick="calculateOffer()" style="margin-bottom: 5px">Calculate</button>
-    <button type="button" onclick="submitForm()" style="margin-bottom: 5px; margin-left: 10px;">Submit</button>
+    <button type="button" onclick="validateForm()" style="margin-bottom: 5px; margin-left: 10px;">Submit</button>
     <button type="button" onclick="clearForm()" style="margin-bottom: 5px; margin-left: 10px;">Clear</button>
 </div>
 
@@ -103,12 +103,11 @@
             alert(data.message);
             location.reload();  // Refresh the page to clear the form
         })
-        .catch(error => console.error('
-Error:', error));
+        .catch(error => console.error('Error:', error));
     }
 
     function calculateOffer() {
-        const formData = {};
+        const formData =
         formInputs.forEach(input => {
             formData[input.name] = input.value.trim();
         });
@@ -139,6 +138,15 @@ Error:', error));
             }
         })
         .catch(error => console.error('Error:', error));
+    }
+
+    function validateForm() {
+        const offerAccepted = document.getElementById('offer-accepted').value;
+        if (offerAccepted === "") {
+            alert("Please select whether the offer was accepted.");
+            return;
+        }
+        submitForm();
     }
 
     function clearForm() {
