@@ -125,3 +125,25 @@ def calculate_value(total_annual_subs, payment_frequency, renewal, months_free):
     final_value = total_annual_subs - round(discount, 2)
 
     return final_value
+
+def format_currency(value):
+    """
+    Format the given number as currency in British Pounds.
+
+    This function takes a numerical value, converts it to a float,
+    and formats it as a string representing currency in British Pounds (£)
+    with comma separators for thousands and two decimal places.
+    If the input value cannot be converted to a float, it returns the value as is.
+
+    Args:
+        value (str, int, float): The numerical value to be formatted.
+
+    Returns:
+        str: The formatted currency string if the input is a valid number,
+             otherwise the original input value.
+    """
+    try:
+        value = float(value)
+        return f"£{value:,.2f}"
+    except ValueError:
+        return value

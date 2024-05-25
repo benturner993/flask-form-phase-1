@@ -2,17 +2,15 @@ from flask import Flask, render_template, request, jsonify
 import csv
 import os
 from datetime import datetime
-from calculator import calculate_months, calculate_value, eligibility
+from calculator import (calculate_months, calculate_value,
+                        eligibility, format_currency)
+
+# static variables
+schema = 'consumer_retention'
+db_schema_1 = f'{schema}-direct_outcomes.csv'
+db_schema_2 = f'{schema}-direct_searches.csv'
 
 app = Flask(__name__)
-
-def format_currency(value):
-    """Format the given number as currency."""
-    try:
-        value = float(value)
-        return f"£{value:,.2f}"
-    except ValueError:
-        return value  # If conversion fails, return the original value
 
 @app.route('/')
 def index():
@@ -34,7 +32,7 @@ def submit_form():
         months_free_this = data['months-free-this']
         offer_accepted = data['offer-accepted']
 
-        csv_file_path = os.path.join('data', 'user_data.csv')
+        csv_file_path = os.path.join('data', db_schema_1)
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         with open(csv_file_path, 'a', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
@@ -83,7 +81,7 @@ def multiply_annual_subs():
         formatted_value = format_currency(value)
 
         # store outcomes and return
-        csv_file_path = os.path.join('data', 'calculated_data.csv')
+        csv_file_path = os.path.join('data', db_schema_2)
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
         with open(csv_file_path, 'a', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
