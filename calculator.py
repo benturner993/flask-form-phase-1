@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import timedelta
 
 non_claimer_lookup = {
     "Red": 1,
@@ -81,17 +81,47 @@ def calculate_months(total_annual_subs, registration, arrears, financial_distres
         return months_free
 
 def eligibility(months_free):
-    if months_free==0:
+    """
+    Determine the eligibility for a discount based on the number of free months.
+
+    Parameters:
+    months_free (int): The number of free months provided.
+
+    Returns:
+    tuple:
+        - (int): 0 if not eligible, 1 if eligible.
+        - (str): A message indicating eligibility status and the discount period.
+    """
+    if months_free == 0:
         return 0, "Not Eligible"
     else:
         return 1, f"Eligible for {months_free} Month(s) Discount"
 
 def calculate_value(total_annual_subs, payment_frequency, renewal, months_free):
+    """
+    Calculate the final subscription value after applying free months.
 
-    final_value = float(total_annual_subs) - round(
-        (float(total_annual_subs)/12 * months_free)
-        if payment_frequency == "Monthly"
-        else (float(total_annual_subs)/((renewal + datetime.timedelta(days=365)) - renewal).days * months_free * 31),2
-    )
+    Parameters:
+    total_annual_subs (float): The total annual subscription cost.
+    payment_frequency (str): The payment frequency ('Monthly' or other).
+    renewal (datetime.date): The renewal date.
+    months_free (int): Number of free months provided.
+
+    Returns:
+    float: The final value after deducting the free months.
+    """
+
+    # Convert total_annual_subs to float
+    total_annual_subs = float(total_annual_subs)
+
+    if payment_frequency == "Monthly":
+        # Monthly payment case
+        discount = (total_annual_subs / 12) * months_free
+    else:
+        # Other payment frequencies
+        days_in_period = (renewal + timedelta(days=365) - renewal).days
+        discount = (total_annual_subs / days_in_period) * months_free * 31
+
+    final_value = total_annual_subs - round(discount, 2)
 
     return final_value

@@ -11,11 +11,11 @@
     <div style="max-width: 90%; width: 100%; display: flex; justify-content: space-between;">
         <div style="width: 70vw;">
             <form id="user-form" style="margin-top: 10px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(2, 45%); gap: 5%; position: relative;">
-                <input type="text" id="registration-number" name="registration-number" placeholder="Registration Number" class="input-field">
-                <input type="date" id="renewal-date" name="renewal-date" placeholder="Renewal Date" class="input-field">
-                <input type="number" id="annual-subs" name="annual-subs" placeholder="Total Annual Subs incl IPT" class="input-field">
-                <select id="color-segment" name="color-segment" class="input-field">
-                    <option value="" disabled selected>Choose Colour Segment</option>
+                <input type="text" id="registration-number" name="registration-number" placeholder="Please insert a registration number" class="input-field" style="font-size: 0.8em;">
+                <input type="date" id="renewal-date" name="renewal-date" placeholder="Please insert a renewal date" class="input-field" style="font-size: 0.8em;">
+                <input type="number" id="annual-subs" name="annual-subs" placeholder="Please insert the total annual subs incl IPT" class="input-field" style="font-size: 0.8em;">
+                <select id="color-segment" name="color-segment" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please choose a colour segment</option>
                     <option value="Red">Red</option>
                     <option value="Green">Green</option>
                     <option value="Amber">Amber</option>
@@ -25,38 +25,38 @@
                     <option value="Purple">Purple</option>
                     <option value="Missing">Missing</option>
                 </select>
-                <select id="claims-paid" name="claims-paid" class="input-field">
-                    <option value="" disabled selected>Value of Claims Paid in Last Year?</option>
+                <select id="claims-paid" name="claims-paid" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please select the value of claims paid in the last year</option>
                     <option value="Less Than £500">Less Than £500</option>
                     <option value="Between £500 and £1000">Between £500 and £1000</option>
                     <option value="More Than £1000">More Than £1000</option>
                 </select>
-                <select id="payment-frequency" name="payment-frequency" class="input-field">
-                    <option value="" disabled selected>What is the payment frequency?</option>
+                <select id="payment-frequency" name="payment-frequency" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please select the payment frequency</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Annually">Annually</option>
                 </select>
-                <select id="months-arrears" name="months-arrears" class="input-field">
-                    <option value="" disabled selected>Number of months in arrears?</option>
+                <select id="months-arrears" name="months-arrears" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please select the number of months in arrears</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
-                <select id="months-free-last" name="months-free-last" class="input-field">
-                    <option value="" disabled selected>Did the member receive a Months Free Last Year?</option>
+                <select id="months-free-last" name="months-free-last" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please select if the member received a months free last year</option>
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
                 </select>
-                <select id="months-free-this" name="months-free-this" class="input-field">
-                    <option value="" disabled selected>Number of months free in this contract year?</option>
+                <select id="months-free-this" name="months-free-this" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please select the number of months free in this contract year</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
-                <select id="offer-accepted" name="offer-accepted" class="input-field">
-                    <option value="" disabled selected>Offer Accepted?</option>
+                <select id="offer-accepted" name="offer-accepted" class="input-field" style="font-size: 0.8em;">
+                    <option value="" disabled selected hidden>Please select if the offer was accepted</option>
                     <option value="Not Eligible for Offer">Not Eligible for Offer</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
@@ -155,11 +155,13 @@
         width: 100%;
         box-sizing: border-box;
         height: 40px;
+        font-size: 0.8em;
     }
 
     select.input-field {
         width: 100%;
         height: 40px;
+        font-size: 0.8em;
     }
 
     .input-field:not(:last-child) {
@@ -173,6 +175,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        font-size: 0.8em;
     }
 </style>
 {% endblock %}
