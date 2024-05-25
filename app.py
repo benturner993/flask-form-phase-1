@@ -6,6 +6,14 @@ from calculator import calculate_months, calculate_value, eligibility
 
 app = Flask(__name__)
 
+def format_currency(value):
+    """Format the given number as currency."""
+    try:
+        value = float(value)
+        return f"£{value:,.2f}"
+    except ValueError:
+        return value  # If conversion fails, return the original value
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -35,7 +43,6 @@ def submit_form():
         return jsonify({'message': 'Input saved successfully'})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-
 
 @app.route('/multiply', methods=['POST'])
 def multiply_annual_subs():
@@ -71,6 +78,10 @@ def multiply_annual_subs():
         total_payable = calculate_value(total_annual_subs, payment_frequency, renewal, months_free)
         value = total_annual_subs - total_payable
 
+        # Format the financial values
+        formatted_total_payable = format_currency(total_payable)
+        formatted_value = format_currency(value)
+
         # store outcomes and return
         csv_file_path = os.path.join('data', 'calculated_data.csv')
         os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
@@ -78,7 +89,7 @@ def multiply_annual_subs():
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow([registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url])
 
-        return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': value, 'total_payable': total_payable})
+        return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': formatted_value, 'total_payable': formatted_total_payable})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 

@@ -66,8 +66,8 @@
                 </select>
             </form>
         </div>
-        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 20px;">
-                    <p>Offer:<span id="annual-subs-display"></span></p>
+        <div id="grey-box" style="background-color: #f1efeb; padding: 20px; width: 25vw; display: flex; flex-direction: column; justify-content: flex-start; border-radius: 20px; border: 2px solid transparent;">
+            <p>Offer:<span id="annual-subs-display"></span></p>
             <p>Value:<span id="value"></span></p>
             <p>Total Payable: <span id="total_payable"></span></p>
         </div>
@@ -76,11 +76,13 @@
 <div style="display: flex; justify-content: flex-end; margin-right: 10vh;">
     <button onclick="displayAnnualSubs()" style="margin-bottom: 5px">Calculate</button>
     <button type="button" onclick="submitForm()" style="margin-bottom: 5px; margin-left: 10px;">Submit</button>
+    <button type="button" onclick="clearForm()" style="margin-bottom: 5px; margin-left: 10px;">Clear</button>
 </div>
 
 <script>
     const formInputs = document.querySelectorAll('.input-field');
     const annualSubsDisplay = document.getElementById('annual-subs-display');
+    const greyBox = document.getElementById('grey-box');
 
     function submitForm() {
         const formData = {};
@@ -98,9 +100,7 @@
         .then(response => response.json())
         .then(data => {
             alert(data.message);
-            formInputs.forEach(input => {
-                input.value = '';
-            });
+            location.reload();  // Refresh the page to clear the form
         })
         .catch(error => console.error('Error:', error));
     }
@@ -125,6 +125,13 @@
                 annualSubsDisplay.textContent = data.result;
                 document.getElementById('total_payable').textContent = data.total_payable;
                 document.getElementById('value').textContent = data.value;
+
+                // Set the border color based on offer_bin
+                if (data.eligible === 1) {
+                    greyBox.style.borderColor = 'green';
+                } else {
+                    greyBox.style.borderColor = 'red';
+                }
             } else {
                 annualSubsDisplay.textContent = 'Error: ' + data.error;
             }
@@ -132,9 +139,12 @@
         .catch(error => console.error('Error:', error));
     }
 
+    function clearForm() {
+        location.reload();  // Refresh the page to clear the form
+    }
+
     window.onload = function() {
         const userForm = document.getElementById('user-form');
-        const greyBox = document.getElementById('grey-box');
         greyBox.style.height = `${userForm.offsetHeight}px`;
     };
 </script>
