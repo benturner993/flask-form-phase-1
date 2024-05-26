@@ -34,10 +34,10 @@ def submit_form():
         months_arrears = data['months-arrears']
         months_free_last = data['months-free-last']
         months_free_this = data['months-free-this']
-        offer_accepted = data['offer-accepted']
+        # offer_accepted = data['offer-accepted']
 
         csv_file_path = os.path.join('data', db_schema_1)
-        row_data = [registration_number, renewal_date, annual_subs, color_segment, claims_paid, payment_frequency, months_arrears, months_free_last, months_free_this, offer_accepted, datetime.now()]
+        row_data = [registration_number, renewal_date, annual_subs, color_segment, claims_paid, payment_frequency, months_arrears, months_free_last, months_free_this, datetime.now()]
         save_to_csv(csv_file_path, row_data)
 
         return jsonify({'message': 'Successfully submitted.'})

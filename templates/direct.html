@@ -2,9 +2,8 @@
 
 {% block content %}
 
-<div style="text-align: center; padding: 55px 0; background-color: #f1efeb; color: black; position: relative; margin-top: -20px; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);">
-    <h3 style="margin: 0; padding: 0; width: 100%;">Welcome to Reward and Retain</h3>
-    <h1 style="margin: 0; padding: 0; width: 100%;">Your Hub for Direct Reactive Retention</h1>
+<div style="text-align: center; padding: 20px; background-image: url('static/online-Looking-out-to-sea.png'); background-size: cover; background-position: center 15%; color: #0d1846; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; margin-top: -20px; min-height: 140px;">
+    <h1>Your Hub for Direct Reactive Retention</h1>
 </div>
 
 <div style="display: flex; justify-content: center; padding: 20px;">
@@ -54,6 +53,21 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
             </select>
+        </form>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: center; padding: 20px;">
+    <div id="grey-box" style="background-color: #f1efeb; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent; max-width: 70vw; margin-right: 20px;">
+        <h3>Customer Options</h3>
+        <p>Offer: <span id="annual-subs-display" style="font-weight: bold;"></span></p>
+        <p>Value: <span id="value" style="font-weight: bold;"></span></p>
+        <p>Total Payable: <span id="total_payable" style="font-weight: bold;"></span></p>
+    </div>
+
+    <div id="track-outcomes-box" style="background-color: #f1efeb; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent; max-width: 70vw;">
+        <h3>Track Customer Outcomes</h3>
+        <form id="outcomes-form" style="display: grid; gap: 10px;">
             <select id="offer-accepted" name="offer-accepted" class="input-field" style="font-size: 0.8em;" required>
                 <option value="" disabled selected hidden>Offer was Accepted?</option>
                 <option value="Not Eligible for Offer">Not Eligible for Offer</option>
@@ -68,16 +82,8 @@
 </div>
 
 <div style="display: flex; justify-content: center; padding: 20px;">
-    <div id="grey-box" style="background-color: #f1efeb; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent; max-width: 70vw;">
-        <p>Offer: <span id="annual-subs-display" style="font-weight: bold;"></span></p>
-        <p>Value: <span id="value" style="font-weight: bold;"></span></p>
-        <p>Total Payable: <span id="total_payable" style="font-weight: bold;"></span></p>
-    </div>
-</div>
-
-<div style="display: flex; justify-content: center; padding: 20px;">
     <button id="calculate-button" onclick="calculateOffer()" style="margin-bottom: 5px">Calculate</button>
-    <button id="submit-button" type="button" onclick="validateForm()" style="margin-bottom: 5px; margin-left: 10px; display: none;">Submit</button>
+    <button id="submit-button" type="button" onclick="submitForm()" style="margin-bottom: 5px; margin-left: 10px; display: none;">Submit</button>
     <button id="clear-button" type="button" onclick="clearForm()" style="margin-bottom: 5px; margin-left: 10px; display: none;">Clear</button>
 </div>
 
@@ -85,6 +91,7 @@
     const formInputs = document.querySelectorAll('.input-field');
     const annualSubsDisplay = document.getElementById('annual-subs-display');
     const greyBox = document.getElementById('grey-box');
+    const trackOutcomesBox = document.getElementById('track-outcomes-box');
     const formContainer = document.getElementById('form-container');
     const submitButton = document.getElementById('submit-button');
     const clearButton = document.getElementById('clear-button');
@@ -139,8 +146,9 @@
                     greyBox.style.borderColor = 'red';
                 }
 
-                // Show the grey box and hide the form container
+                // Show the grey boxes and hide the form container
                 greyBox.style.display = 'flex';
+                trackOutcomesBox.style.display = 'flex';
                 formContainer.style.display = 'none';
 
                 // Show the Submit and Clear buttons
@@ -155,9 +163,9 @@
     }
 
     function validateForm() {
-        const offerAccepted = document.getElementById('offer-accepted').value;
-        if (offerAccepted === "") {
-            alert("Please select whether the offer was accepted.");
+        const registrationNumber = document.getElementById('registration-number').value;
+        if (registrationNumber === "") {
+            alert("Please make sure Registration Number is valid.");
             return;
         }
         submitForm();
@@ -170,6 +178,7 @@
     window.onload = function() {
         const userForm = document.getElementById('user-form');
         greyBox.style.height = `${userForm.offsetHeight}px`;
+        trackOutcomesBox.style.height = `${userForm.offsetHeight}px`;
     };
 </script>
 
@@ -215,4 +224,5 @@
         font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
     }
 </style>
+
 {% endblock %}
