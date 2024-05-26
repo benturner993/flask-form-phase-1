@@ -7,8 +7,8 @@ from utils import save_to_csv
 
 # static variables
 schema = 'consumer_retention'
-db_schema_1 = f'{schema}-direct_outcomes.csv'
-db_schema_2 = f'{schema}-direct_searches.csv'
+db_schema_1 = f'{schema}-direct_searches.csv'
+db_schema_2 = f'{schema}-direct_outcomes.csv'
 
 app = Flask(__name__)
 
@@ -19,30 +19,6 @@ def index():
 @app.route('/direct')
 def direct():
     return render_template('direct.html')
-
-@app.route('/submit', methods=['POST'])
-def submit_form():
-    try:
-        data = request.json
-
-        registration_number = data['registration-number']
-        renewal_date = data['renewal-date']
-        annual_subs = data['annual-subs']
-        color_segment = data['color-segment']
-        claims_paid = data['claims-paid']
-        payment_frequency = data['payment-frequency']
-        months_arrears = data['months-arrears']
-        months_free_last = data['months-free-last']
-        months_free_this = data['months-free-this']
-        # offer_accepted = data['offer-accepted']
-
-        csv_file_path = os.path.join('data', db_schema_1)
-        row_data = [registration_number, renewal_date, annual_subs, color_segment, claims_paid, payment_frequency, months_arrears, months_free_last, months_free_this, datetime.now()]
-        save_to_csv(csv_file_path, row_data)
-
-        return jsonify({'message': 'Successfully submitted.'})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
 
 @app.route('/calculate_offer', methods=['POST'])
 def calculate_offer():
@@ -83,11 +59,38 @@ def calculate_offer():
         formatted_value = format_currency(value)
 
         # store outcomes and return
-        csv_file_path = os.path.join('data', db_schema_2)
+        csv_file_path = os.path.join('data', db_schema_1)
         row_data = [registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url]
         save_to_csv(csv_file_path, row_data)
 
-        return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': formatted_value, 'total_payable': formatted_total_payable})
+        return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': formatted_value, 'total_payable': formatted_total_payable, 'user_data': data})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/submit', methods=['POST'])
+def submit_form():
+    try:
+        # load the user form data and outcomes data
+        user_data = request.json.get('user_data', {})
+        outcomes_data = request.json.get('outcomes_data', {})
+
+        # Save user data
+        csv_file_path = os.path.join('data', db_schema_2)
+        row_data = [user_data.get('registration-number', ''),
+                    user_data.get('renewal-date', ''),
+                    user_data.get('annual-subs', ''),
+                    user_data.get('color-segment', ''),
+                    user_data.get('claims-paid', ''),
+                    user_data.get('payment-frequency', ''),
+                    user_data.get('months-arrears', ''),
+                    user_data.get('months-free-last', ''),
+                    user_data.get('months-free-this', ''),
+                    datetime.now(),
+                    outcomes_data.get('offer', ''),
+                    outcomes_data.get('offer-accepted', '')]
+        save_to_csv(csv_file_path, row_data)
+
+        return jsonify({'message': 'Successfully submitted.'})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
