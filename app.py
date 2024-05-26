@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+# from flask_azure_oauth import FlaskAzureOAuth
 import os
 from datetime import datetime
 from calculator import (calculate_months, calculate_value,
@@ -12,6 +13,11 @@ db_schema_2 = f'{schema}-direct_outcomes.csv'
 
 app = Flask(__name__)
 
+# params for azure deployment
+# app.config['AZURE_OAUTH_CLIENT_ID'] = '<your-client-id>'
+# app.config['AZURE_OAUTH_CLIENT_SECRET'] = '<your-client-secret>'
+# app.config['AZURE_OAUTH_TENANT'] = '<your-tenant-id>'
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -20,9 +26,18 @@ def index():
 def direct():
     return render_template('direct.html')
 
+@app.route('/training')
+def training():
+    return render_template('training.html')
+
 @app.route('/calculate_offer', methods=['POST'])
 def calculate_offer():
     try:
+        # collect user information
+        # user_info = request.oauth.user
+        # username = user_info.get('name')
+        # email = user_info.get('email')
+
         # collect input information
         data = request.json
         registration = float(data['registration-number'])
@@ -70,9 +85,18 @@ def calculate_offer():
 @app.route('/submit', methods=['POST'])
 def submit_form():
     try:
+        # collect user information
+        # collect user information
+        # user_info = request.oauth.user
+        # username = user_info.get('name')
+        # email = user_info.get('email')
+
         # load the user form data and outcomes data
         user_data = request.json.get('user_data', {})
         outcomes_data = request.json.get('outcomes_data', {})
+
+        # Get the URL from the request headers
+        url = request.headers.get('Referer')
 
         # Save user data
         csv_file_path = os.path.join('data', db_schema_2)
@@ -86,6 +110,7 @@ def submit_form():
                     user_data.get('months-free-last', ''),
                     user_data.get('months-free-this', ''),
                     datetime.now(),
+                    url,
                     outcomes_data.get('offer', ''),
                     outcomes_data.get('offer-accepted', '')]
         save_to_csv(csv_file_path, row_data)
