@@ -58,22 +58,23 @@
 </div>
 
 <div style="display: flex; justify-content: center; padding: 20px;">
-    <div id="grey-box" style="background-color: #f1efeb; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent; max-width: 70vw; margin-right: 20px;">
-        <h3>Customer Options</h3>
+
+    <div id="grey-box" style="background-image: url('{{ url_for('static', filename='ai.png') }}'); background-size: 50px; background-position: 10px 10px; background-repeat: no-repeat; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid #f1efeb; max-width: 70vw; margin-right: 20px;">
+        <h3 style="margin-top: 55px;">Offers</h3>
         <p>Offer: <span id="annual-subs-display" style="font-weight: bold;"></span></p>
         <p>Value: <span id="value" style="font-weight: bold;"></span></p>
         <p>Total Payable: <span id="total_payable" style="font-weight: bold;"></span></p>
     </div>
 
-    <div id="track-outcomes-box" style="background-color: #f1efeb; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent; max-width: 70vw;">
-        <h3>Track Customer Outcomes</h3>
+    <div id="track-outcomes-box" style="background-image: url('{{ url_for('static', filename='bupa_track.png') }}'); background-size: 50px; background-position: 10px 10px; background-repeat: no-repeat; background-color: white; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid #0d1846; max-width: 70vw;">
+        <h3 style="margin-top: 55px;">Outcome</h3>
         <form id="outcomes-form" style="display: grid; gap: 10px;">
             <select id="offer" name="offer" class="input-field" style="font-size: 0.8em;" required>
                 <option value="" disabled selected hidden>Offer Proposed</option>
                 <option value="1 Month Free">1 Month Free</option>
             </select>
             <select id="offer-accepted" name="offer-accepted" class="input-field" style="font-size: 0.8em;" required>
-                <option value="" disabled selected hidden>Offer was Accepted?</option>
+                <option value="" disabled selected hidden>Outcome</option>
                 <option value="Not Eligible for Offer">Not Eligible for Offer</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
