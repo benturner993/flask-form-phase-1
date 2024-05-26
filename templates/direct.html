@@ -68,6 +68,10 @@
     <div id="track-outcomes-box" style="background-color: #f1efeb; padding: 10px; display: none; flex-direction: column; justify-content: flex-start; border-radius: 10px; border: 2px solid transparent; max-width: 70vw;">
         <h3>Track Customer Outcomes</h3>
         <form id="outcomes-form" style="display: grid; gap: 10px;">
+            <select id="offer" name="offer" class="input-field" style="font-size: 0.8em;" required>
+                <option value="" disabled selected hidden>Offer Proposed</option>
+                <option value="1 Month Free">1 Month Free</option>
+            </select>
             <select id="offer-accepted" name="offer-accepted" class="input-field" style="font-size: 0.8em;" required>
                 <option value="" disabled selected hidden>Offer was Accepted?</option>
                 <option value="Not Eligible for Offer">Not Eligible for Offer</option>
@@ -84,7 +88,6 @@
 <div style="display: flex; justify-content: center; padding: 20px;">
     <button id="calculate-button" onclick="calculateOffer()" style="margin-bottom: 5px">Calculate</button>
     <button id="submit-button" type="button" onclick="submitForm()" style="margin-bottom: 5px; margin-left: 10px; display: none;">Submit</button>
-    <button id="clear-button" type="button" onclick="clearForm()" style="margin-bottom: 5px; margin-left: 10px; display: none;">Clear</button>
 </div>
 
 <script>
@@ -94,7 +97,6 @@
     const trackOutcomesBox = document.getElementById('track-outcomes-box');
     const formContainer = document.getElementById('form-container');
     const submitButton = document.getElementById('submit-button');
-    const clearButton = document.getElementById('clear-button');
     const calculateButton = document.getElementById('calculate-button');
 
     function submitForm() {
@@ -125,6 +127,9 @@
         });
         formData.url = window.location.href; // Get the current URL
 
+        // Hide the calculate button immediately
+        calculateButton.style.display = 'none';
+
         fetch('/calculate_offer', {
             method: 'POST',
             headers: {
@@ -151,15 +156,17 @@
                 trackOutcomesBox.style.display = 'flex';
                 formContainer.style.display = 'none';
 
-                // Show the Submit and Clear buttons
+                // Show the Submit button
                 submitButton.style.display = 'inline-block';
-                clearButton.style.display = 'inline-block';
-                calculateButton.style.display = 'none';
             } else {
                 annualSubsDisplay.textContent = 'Error: ' + data.error;
+                calculateButton.style.display = 'inline-block'; // Show the calculate button again if there is an error
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            calculateButton.style.display = 'inline-block'; // Show the calculate button again if there is an error
+        });
     }
 
     function validateForm() {
