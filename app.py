@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, jsonify
-import csv
 import os
 from datetime import datetime
 from calculator import (calculate_months, calculate_value,
                         eligibility, format_currency)
+from utils import save_to_csv
 
 # static variables
 schema = 'consumer_retention'
@@ -11,12 +11,6 @@ db_schema_1 = f'{schema}-direct_outcomes.csv'
 db_schema_2 = f'{schema}-direct_searches.csv'
 
 app = Flask(__name__)
-
-def save_to_csv(file_path, row_data):
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, 'a', newline='') as csvfile:
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(row_data)
 
 @app.route('/')
 def index():
