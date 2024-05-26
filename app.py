@@ -26,6 +26,10 @@ def index():
 def direct():
     return render_template('direct.html')
 
+@app.route('/intermediary')
+def intermediary():
+    return render_template('intermediary.html')
+
 @app.route('/training')
 def training():
     return render_template('training.html')
