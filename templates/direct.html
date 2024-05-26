@@ -107,7 +107,7 @@
     }
 
     function calculateOffer() {
-        const formData =
+        const formData = {}; // Initialize formData object
         formInputs.forEach(input => {
             formData[input.name] = input.value.trim();
         });

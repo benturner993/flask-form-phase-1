@@ -12,6 +12,12 @@ db_schema_2 = f'{schema}-direct_searches.csv'
 
 app = Flask(__name__)
 
+def save_to_csv(file_path, row_data):
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, 'a', newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(row_data)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -37,12 +43,10 @@ def submit_form():
         offer_accepted = data['offer-accepted']
 
         csv_file_path = os.path.join('data', db_schema_1)
-        os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
-        with open(csv_file_path, 'a', newline='') as csvfile:
-            csvwriter = csv.writer(csvfile)
-            csvwriter.writerow([registration_number, renewal_date, annual_subs, color_segment, claims_paid, payment_frequency, months_arrears, months_free_last, months_free_this, offer_accepted])
+        row_data = [registration_number, renewal_date, annual_subs, color_segment, claims_paid, payment_frequency, months_arrears, months_free_last, months_free_this, offer_accepted, datetime.now()]
+        save_to_csv(csv_file_path, row_data)
 
-        return jsonify({'message': 'Input saved successfully'})
+        return jsonify({'message': 'Successfully submitted.'})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
@@ -86,10 +90,8 @@ def calculate_offer():
 
         # store outcomes and return
         csv_file_path = os.path.join('data', db_schema_2)
-        os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
-        with open(csv_file_path, 'a', newline='') as csvfile:
-            csvwriter = csv.writer(csvfile)
-            csvwriter.writerow([registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url])
+        row_data = [registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url]
+        save_to_csv(csv_file_path, row_data)
 
         return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': formatted_value, 'total_payable': formatted_total_payable})
     except Exception as e:
