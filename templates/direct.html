@@ -87,12 +87,12 @@
 
 <div style="display: flex; justify-content: center; padding: 20px;">
     <button id="calculate-button" onclick="calculateOffer()">Calculate</button>
-    <button id="submit-button" type="button" onclick="submitForm()">Submit</button>
+    <button id="submit-button" type="button" onclick="submitForm()" style="display: none;">Submit</
+button>
 </div>
 
 <script>
-    const formInputs = document
-.querySelectorAll('.input-field');
+    const formInputs = document.querySelectorAll('.input-field');
     const annualSubsDisplay = document.getElementById('annual-subs-display');
     const greyBox = document.getElementById('grey-box');
     const trackOutcomesBox = document.getElementById('track-outcomes-box');
