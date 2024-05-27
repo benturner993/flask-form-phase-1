@@ -6,10 +6,16 @@ from calculator import (calculate_months, calculate_value,
                         eligibility, format_currency)
 from utils import save_to_csv
 
+# to do:
+# method to save intermediary rows if they exist
+# add colour icons?
+# rendering of intermediary page
+# do we want to save to different schemas?
+
 # static variables
 schema = 'consumer_retention'
-db_schema_1 = f'{schema}-direct_searches.csv'
-db_schema_2 = f'{schema}-direct_outcomes.csv'
+db_schema_1 = f'{schema}-searches.csv'
+db_schema_2 = f'{schema}-outcomes.csv'
 
 app = Flask(__name__)
 
@@ -55,6 +61,8 @@ def calculate_offer():
         segment = str(data['color-segment'])
         claims_paid = str(data['claims-paid'])
         url = data.get('url')
+
+        # if intermediary
 
         # calculator number of eligible months free
         months_free = calculate_months(total_annual_subs,

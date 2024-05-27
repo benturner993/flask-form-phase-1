@@ -9,16 +9,82 @@
 <div style="display: flex; justify-content: center; padding: 20px;">
     <div style="width: 70vw;" id="form-container">
         <form id="user-form" style="margin-top: 10px; margin-bottom: 10px; display: grid; grid-template-columns: repeat(2, 45%); gap: 5%; position: relative;">
-            <select id="intermediary" name="claims-paid" class="input-field" style="font-size: 0.8em;">
-                <option value="" disabled selected hidden>Select Intermediary</option>
-                <option value="Active Quote">Active Quote</option>
-                <option value="Advo Group Ltd">Advo Group Ltd</option>
-                <option value="Aston Lark">Aston Lark</option>
-            </select>
+        <select id="intermediary" name="claims-paid" class="input-field" style="font-size: 0.8em;">
+            <option value="" disabled selected hidden>Select Intermediary</option>
+            <option value="Active Quote">🔴 Active Quote</option>
+            <option value="Advo Group Ltd">🔵 Advo Group Ltd</option>
+            <option value="Aston Lark">🔴 Aston Lark</option>
+            <option value="Baker Hudson">🔴 Baker Hudson</option>
+            <option value="Barts Insurance Brokers Ltd">🔵 Barts Insurance Brokers Ltd</option>
+            <option value="Benefits U (Medisurance & HCF)">🔴 Benefits U (Medisurance & HCF)</option>
+            <option value="Best Risk Management & Financial Services">🔵 Best Risk Management & Financial Services</option>
+            <option value="Better Health">🔴 Better Health</option>
+            <option value="Boitefin Ltd">🔵 Boitefin Ltd</option>
+            <option value="Clarity Insurance Services">🔴 Clarity Insurance Services</option>
+            <option value="Clear Finance">🔴 Clear Finance</option>
+            <option value="DJ Healthcare T/A Sherwood Healthcare">🔵 DJ Healthcare T/A Sherwood Healthcare</option>
+            <option value="Gallagher Risk & Reward">🔴 Gallagher Risk & Reward</option>
+            <option value="Get Medical Plans Ltd">🔵 Get Medical Plans Ltd</option>
+            <option value="Globacare">🔴 Globacare</option>
+            <option value="Healthcheque">🔵 Healthcheque</option>
+            <option value="Healthnet Services">🔴 Healthnet Services</option>
+            <option value="Healthy Horizon">🔵 Healthy Horizon</option>
+            <option value="Heath Crawford">🔴 Heath Crawford</option>
+            <option value="Heritage Health Ltd - Consumer only">🔵 Heritage Health Ltd - Consumer only</option>
+            <option value="Howden ex Punter Southall">🔴 Howden ex Punter Southall</option>
+            <option value="Howden Life & Health">🔴 Howden Life & Health</option>
+            <option value="IHC Ltd">🔵 IHC Ltd</option>
+            <option value="IHCS">🔴 IHCS</option>
+            <option value="Insured Health">🔴 Insured Health</option>
+            <option value="Intelligent PMI">🔴 Intelligent PMI</option>
+            <option value="J Osborne">🔴 J Osborne</option>
+            <option value="Julia Maxwell Limited">🔵 Julia Maxwell Limited</option>
+            <option value="LD Health Solutions">🔵 LD Health Solutions</option>
+            <option value="Lifepoint Healthcare">🔴 Lifepoint Healthcare</option>
+            <option value="H&L Healthcare">🔴 H&L Healthcare</option>
+            <option value="M&N Insurance">🔴 M&N Insurance</option>
+            <option value="Medischeme Health Ltd">🔵 Medischeme Health Ltd</option>
+            <option value="Mercer">🔴 Mercer</option>
+            <option value="Morehealth">🔴 Morehealth</option>
+            <option value="Movo">🔴 Movo</option>
+            <option value="My Health Protected Ltd (SME)">🔵 My Health Protected Ltd (SME)</option>
+            <option value="Nugent Sante">🔴 Nugent Sante</option>
+            <option value="Paragon Health">🔴 Paragon Health</option>
+            <option value="Premier Choice">🔴 Premier Choice</option>
+            <option value="Premier Insurance Services Ltd">🔵 Premier Insurance Services Ltd</option>
+            <option value="Private Healthcare Company">🔴 Private Healthcare Company</option>
+            <option value="Quilter Mortgage Planning Limited">🔵 Quilter Mortgage Planning Limited</option>
+            <option value="Quilter Wealth Limited">🔵 Quilter Wealth Limited</option>
+            <option value="Regency Health">🔴 Regency Health</option>
+            <option value="Remulate Proted Ltd">🔵 Remulate Proted Ltd</option>
+            <option value="Right to Health">🔴 Right to Health</option>
+            <option value="Sante Partners">🔵 Sante Partners</option>
+            <option value="Sutton Winson Ltd">🔵 Sutton Winson Ltd</option>
+            <option value="Switch Health">🔴 Switch Health</option>
+            <option value="THIG">🔴 THIG</option>
+            <option value="THIS">🔴 THIS</option>
+            <option value="The Right Mortgage Ltd">🔵 The Right Mortgage Ltd</option>
+            <option value="Trevor Downing Financial Management (IFA) Ltd">🔵 Trevor Downing Financial Management (IFA) Ltd</option>
+            <option value="USAY">🔴 USAY</option>
+            <option value="Vintage Health Limited">🔵 Vintage Health Limited</option>
+            <option value="Vizion Insurance Brokers Ltd">🔵 Vizion Insurance Brokers Ltd</option>
+            <option value="Willis Towers Watson (WTW)">🔵 Willis Towers Watson (WTW)</option>
+        </select>
             <input type="text" id="intermediary-advisor" name="intermediary-advisor" placeholder="Intermediary Advisor" class="input-field" style="font-size: 0.8em;">
             <input type="text" id="registration-number" name="registration-number" placeholder="Registration Number" class="input-field" style="font-size: 0.8em;">
             <input type="date" id="renewal-date" name="renewal-date" placeholder="Renewal Date" class="input-field" style="font-size: 0.8em;">
             <input type="number" id="annual-subs" name="annual-subs" placeholder="Total Annual Subs incl IPT" class="input-field" style="font-size: 0.8em;">
+<!--            <select id="color-segment" name="color-segment" class="input-field" style="font-size: 0.8em;">-->
+<!--                <option value="" disabled selected hidden>Colour Segment</option>-->
+<!--                <option value="Red">🔴 Red</option>-->
+<!--                <option value="Green">🟢 Green</option>-->
+<!--                <option value="Amber">🟠 Amber</option>-->
+<!--                <option value="New">🟡 New</option>-->
+<!--                <option value="Grey">⚪ Grey</option>-->
+<!--                <option value="Blue">🔵 Blue</option>-->
+<!--                <option value="Purple">🟣 Purple</option>-->
+<!--                <option value="Missing">⚫ Missing</option>-->
+<!--            </select>-->
             <select id="color-segment" name="color-segment" class="input-field" style="font-size: 0.8em;">
                 <option value="" disabled selected hidden>Colour Segment</option>
                 <option value="Red">Red</option>
