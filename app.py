@@ -8,14 +8,11 @@ from utils import save_to_csv
 
 # to do:
 # add required inputs and tests on inputs
-# method to save intermediary rows if they exist
-# add colour icons?
-# do we want to save to different schemas?
 
 # static variables
 schema = 'consumer_retention'
-db_schema_1 = f'{schema}-searches.csv'
-db_schema_2 = f'{schema}-outcomes.csv'
+db_schema_searches = f'{schema}-searches.csv'
+db_schema_outcomes = f'{schema}-outcomes.csv'
 
 app = Flask(__name__)
 
@@ -49,7 +46,7 @@ def calculate_offer():
         months_free = calculate_months_free(user_info)
         offer_bin, offer_str = eligibility(months_free)
         total_payable, value, formatted_total_payable, formatted_value = calculate_financials(user_info, months_free)
-        csv_file_path = os.path.join('data', db_schema_1)
+        csv_file_path = os.path.join('data', db_schema_searches)
         save_outcomes(data, csv_file_path, user_info, months_free, offer_bin, offer_str, value, total_payable)
 
         return jsonify({
@@ -102,14 +99,28 @@ def calculate_financials(user_info, months_free):
     return total_payable, value, formatted_total_payable, formatted_value
 
 def save_outcomes(data, csv_file_path, user_info, months_free, offer_bin, offer_str, value, total_payable):
-    url = user_info['url']
+
     row_data = [
-        user_info['registration'], months_free, offer_bin, offer_str,
-        value, total_payable, user_info['total_annual_subs'], datetime.now(),
-        url
+    user_info['registration'],
+    user_info['renewal'],
+    user_info['payment_frequency'],
+    user_info['total_annual_subs'],
+    user_info['arrears'],
+    user_info['financial_distress'],
+    user_info['mf_last_year'],
+    user_info['mf_this_year'],
+    user_info['segment'],
+    user_info['claims_paid'],
+    user_info['url'],
+    months_free,
+    offer_bin,
+    offer_str,
+    value,
+    total_payable,
+    datetime.now()
     ]
 
-    if 'intermediary' in url:
+    if 'intermediary' in user_info['url']:
         intermediary = data['intermediary']
         intermediary_advisor = data['intermediary-advisor']
         row_data.extend([intermediary, intermediary_advisor])
@@ -124,7 +135,7 @@ def submit_form():
         user_data = request.json.get('user_data', {})
         outcomes_data = request.json.get('outcomes_data', {})
         url = request.headers.get('Referer')
-        csv_file_path = os.path.join('data', db_schema_2)
+        csv_file_path = os.path.join('data', db_schema_outcomes)
         row_data = prepare_submission_data(user_data, outcomes_data, url)
         save_to_csv(csv_file_path, row_data)
 
