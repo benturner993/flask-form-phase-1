@@ -7,6 +7,7 @@ from calculator import (calculate_months, calculate_value,
 from utils import save_to_csv
 
 # to do:
+# add required inputs and tests on inputs
 # method to save intermediary rows if they exist
 # add colour icons?
 # do we want to save to different schemas?
@@ -61,8 +62,6 @@ def calculate_offer():
         claims_paid = str(data['claims-paid'])
         url = data.get('url')
 
-        # if intermediary
-
         # calculator number of eligible months free
         months_free = calculate_months(total_annual_subs,
                                   registration,
@@ -86,7 +85,15 @@ def calculate_offer():
 
         # store outcomes and return
         csv_file_path = os.path.join('data', db_schema_1)
-        row_data = [registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url]
+
+        # create a pathway for intermediary tracking
+        if 'intermediary' in url:
+            intermediary = data['intermediary']
+            intermediary_advisor = data['intermediary-advisor']
+            row_data = [registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs,
+                        datetime.now(), url, intermediary, intermediary_advisor]
+        else:
+            row_data = [registration, months_free, offer_bin, offer_str, value, total_payable, total_annual_subs, datetime.now(), url, '', '']
         save_to_csv(csv_file_path, row_data)
 
         return jsonify({'result': offer_str, 'eligible': offer_bin, 'value': formatted_value, 'total_payable': formatted_total_payable, 'user_data': data})
@@ -111,19 +118,42 @@ def submit_form():
 
         # Save user data
         csv_file_path = os.path.join('data', db_schema_2)
-        row_data = [user_data.get('registration-number', ''),
-                    user_data.get('renewal-date', ''),
-                    user_data.get('annual-subs', ''),
-                    user_data.get('color-segment', ''),
-                    user_data.get('claims-paid', ''),
-                    user_data.get('payment-frequency', ''),
-                    user_data.get('months-arrears', ''),
-                    user_data.get('months-free-last', ''),
-                    user_data.get('months-free-this', ''),
-                    datetime.now(),
-                    url,
-                    outcomes_data.get('offer', ''),
-                    outcomes_data.get('offer-accepted', '')]
+
+        # create a pathway for intermediary tracking
+        if 'intermediary' not in url:
+
+            row_data = [user_data.get('registration-number', ''),
+                        user_data.get('renewal-date', ''),
+                        user_data.get('annual-subs', ''),
+                        user_data.get('color-segment', ''),
+                        user_data.get('claims-paid', ''),
+                        user_data.get('payment-frequency', ''),
+                        user_data.get('months-arrears', ''),
+                        user_data.get('months-free-last', ''),
+                        user_data.get('months-free-this', ''),
+                        datetime.now(),
+                        url,
+                        outcomes_data.get('offer', ''),
+                        outcomes_data.get('offer-accepted', ''),
+                        '',
+                        '']
+        else:
+            row_data = [user_data.get('registration-number', ''),
+                        user_data.get('renewal-date', ''),
+                        user_data.get('annual-subs', ''),
+                        user_data.get('color-segment', ''),
+                        user_data.get('claims-paid', ''),
+                        user_data.get('payment-frequency', ''),
+                        user_data.get('months-arrears', ''),
+                        user_data.get('months-free-last', ''),
+                        user_data.get('months-free-this', ''),
+                        datetime.now(),
+                        url,
+                        outcomes_data.get('offer', ''),
+                        outcomes_data.get('offer-accepted', ''),
+                        user_data.get('intermediary', ''),
+                        user_data.get('intermediary - advisor', '')]
+
         save_to_csv(csv_file_path, row_data)
 
         return jsonify({'message': 'Successfully submitted.'})
