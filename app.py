@@ -9,7 +9,6 @@ from utils import save_to_csv
 # to do:
 # method to save intermediary rows if they exist
 # add colour icons?
-# rendering of intermediary page
 # do we want to save to different schemas?
 
 # static variables
