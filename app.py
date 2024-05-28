@@ -228,7 +228,7 @@ def submit_form():
     try:
         user_data = request.json.get('user_data', {})
         outcomes_data = request.json.get('outcomes_data', {})
-        url = request.headers.get('Referer')
+        url = request.json.get('url')
         csv_file_path = os.path.join('data', db_schema_outcomes)
         row_data = prepare_submission_data(user_data, outcomes_data, url)
         save_to_csv(csv_file_path, row_data)
