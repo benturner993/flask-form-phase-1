@@ -4,12 +4,7 @@ from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 from calculator import (calculate_months, calculate_value,
                         eligibility, format_currency)
-from utils import save_to_csv
-
-# make sure it works across the channels / pages
-# how does this tie in with forms?
-# change form to registration_details
-# rename columns to swift equivalents
+from utils import (save_to_csv, save_transposed_to_csv)
 
 # static variables
 db = 'consumer_retention'
@@ -94,34 +89,72 @@ def calculate_offer():
         save_to_csv(search_csv_file_path, search_row_data)
 
         form_csv_file_path = os.path.join('data', db_schema_form)
-        row_data = [
-            user_info['guid'],
-            user_info['registration-number'],
-            user_info['user-renewal-date'],
-            user_info['user-payment-frequency'],
-            user_info['user-annual-subs'],
-            user_info['user-months-arrears'],
-            user_info['user-financial-distress'],
-            user_info['user-months-free-last'],
-            user_info['user-months-free-this'],
-            user_info['user-color-segment'],
-            user_info['user-claims-paid'],
-            # user_info['url'],
-            # months_free,
-            # offer_bin,
-            # offer_str,
-            # value,
-            # total_payable,
-            datetime.now()
+
+        guid = user_info['guid']
+        source = 'user-input'
+
+        # Define the fields
+        fields = [
+            'registration-number',
+            'user-renewal-date',
+            'user-payment-frequency',
+            'user-annual-subs',
+            'user-months-arrears',
+            'user-financial-distress',
+            'user-months-free-last',
+            'user-months-free-this',
+            'user-color-segment',
+            'user-claims-paid',
+            'timestamp',
+            'user-intermediary',
+            'user-intermediary-advisor'
         ]
 
         if 'intermediary' in user_info['url']:
-            intermediary = data['user-intermediary']
-            intermediary_advisor = data['user-intermediary-advisor']
-            row_data.extend([intermediary, intermediary_advisor])
+
+            # Define the row data
+            row_data = [
+                # user_info['guid'],
+                user_info['registration-number'],
+                user_info['user-renewal-date'],
+                user_info['user-payment-frequency'],
+                user_info['user-annual-subs'],
+                user_info['user-months-arrears'],
+                user_info['user-financial-distress'],
+                user_info['user-months-free-last'],
+                user_info['user-months-free-this'],
+                user_info['user-color-segment'],
+                user_info['user-claims-paid'],
+                datetime.now(),
+                user_info['user-intermediary'],
+                user_info['user-intermediary-advisor']
+            ]
         else:
-            row_data.extend(['', ''])
-        save_to_csv(form_csv_file_path, row_data)
+            # Define the row data
+            row_data = [
+                # user_info['guid'],
+                user_info['registration-number'],
+                user_info['user-renewal-date'],
+                user_info['user-payment-frequency'],
+                user_info['user-annual-subs'],
+                user_info['user-months-arrears'],
+                user_info['user-financial-distress'],
+                user_info['user-months-free-last'],
+                user_info['user-months-free-this'],
+                user_info['user-color-segment'],
+                user_info['user-claims-paid'],
+                datetime.now(),
+                '',
+                ''
+            ]
+
+        # Prepare transposed data
+        transposed_data = []
+        for field, value in zip(fields, row_data):
+            transposed_data.append([guid, source, field, value])
+
+        # Function to save transposed data to CSV
+        save_transposed_to_csv(form_csv_file_path, transposed_data)
 
         return jsonify({
             'result': offer_str,
@@ -132,18 +165,6 @@ def calculate_offer():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-
-# def calculate_months_free(user_info):
-#     return calculate_months(
-#         user_info['user-annual-subs'],
-#         user_info['registration-number'],
-#         user_info['user-months-arrears'],
-#         user_info['user-financial-distress'],
-#         user_info['user-months-free-last'],
-#         user_info['user-months-free-this'],
-#         user_info['user-color-segment'],
-#         user_info['user-claims-paid']
-#     )
 
 def calculate_financials(user_info, months_free):
     total_payable = calculate_value(
@@ -166,12 +187,6 @@ def submit_form():
         url = request.json.get('url')
         guid = request.json.get('guid')
 
-        # print('user_data:',user_data)
-        # print('total_payable:', total_payable)
-        # print('outcomes_data:',outcomes_data)
-        # print('url:',url)
-        # print('guid:', guid)
-
         csv_file_path = os.path.join('data', db_schema_outcomes)
 
         base_row_data = [
@@ -182,30 +197,21 @@ def submit_form():
             user_data.get('user-renewal-date', ''),
             user_data.get('user-annual-subs', ''),
             total_payable,
-            # user_data.get('user-color-segment', ''),
-            # user_data.get('user-claims-paid', ''),
-            # user_data.get('user-payment-frequency', ''),
-            # user_data.get('user-months-arrears', ''),
-            # user_data.get('user-months-free-last', ''),
-            # user_data.get('user-months-free-this', ''),
             outcomes_data.get('offer', ''),
             outcomes_data.get('offer-accepted', '')
         ]
 
-        # if 'intermediary' in url:
-        #     base_row_data.extend([
-        #         user_data.get('intermediary', ''),
-        #         user_data.get('intermediary-advisor', '')
-        #     ])
-        # else:
-        #     base_row_data.extend(['', ''])
-
-        # row_data = prepare_submission_data(user_data, outcomes_data, url)
         save_to_csv(csv_file_path, base_row_data)
 
         return jsonify({'message': 'Successfully submitted.'})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
+def save_transposed_to_csv(file_path, data):
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
