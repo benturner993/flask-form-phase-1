@@ -6,6 +6,13 @@ from calculator import (calculate_months, calculate_value,
                         eligibility, format_currency)
 from utils import (save_to_csv, save_transposed_to_csv)
 
+# to do
+# refactor code so that it has been simplified
+# try to make the fields which are shared across as json more standardised
+# rename variables to mirror swift
+# mirror changes in v2 of app
+# add guardrails in app
+
 # static variables
 db = 'consumer_retention'
 db_schema_searches = f'{db}-searches.csv'
@@ -206,12 +213,6 @@ def submit_form():
         return jsonify({'message': 'Successfully submitted.'})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-
-def save_transposed_to_csv(file_path, data):
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
