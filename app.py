@@ -7,6 +7,7 @@ from calculator import (calculate_months, calculate_value,
 from utils import (save_to_csv, save_transposed_to_csv)
 
 # to do
+# delete prints
 # refactor code so that it has been simplified
 # try to make the fields which are shared across as json more standardised
 # rename variables to mirror swift
@@ -41,6 +42,9 @@ def training():
 def calculate_offer():
     try:
         data = request.json
+        print('calculate offer: ', data)
+        print(1)
+
         if 'intermediary' in data['url']:
 
             user_info = {
@@ -76,6 +80,7 @@ def calculate_offer():
                 'user-claims-paid': str(data['user-claims-paid']),
                 'url': data.get('url')
             }
+        print(2)
         months_free = calculate_months(
             user_info['user-annual-subs'],
             user_info['registration-number'],
@@ -85,17 +90,23 @@ def calculate_offer():
             user_info['user-months-free-this'],
             user_info['user-color-segment'],
             user_info['user-claims-paid'])
+        print(3)
         offer_bin, offer_str = eligibility(months_free)
+        print(4)
         total_payable, value, formatted_total_payable, formatted_value = calculate_financials(user_info, months_free)
-
+        print(5)
         search_csv_file_path = os.path.join('data', db_schema_searches)
+        print(6)
         search_row_data = [user_info['guid'],
                     user_info['registration-number'],
                     user_info['url'],
                     pd.to_datetime(datetime.now())]
+        print(7)
         save_to_csv(search_csv_file_path, search_row_data)
+        print(8)
 
         form_csv_file_path = os.path.join('data', db_schema_form)
+        print(9)
 
         guid = user_info['guid']
         source = 'user-input'
@@ -116,6 +127,7 @@ def calculate_offer():
             'user-intermediary',
             'user-intermediary-advisor'
         ]
+        print(10)
 
         if 'intermediary' in user_info['url']:
 
@@ -154,7 +166,7 @@ def calculate_offer():
                 '',
                 ''
             ]
-
+        print(11)
         # Prepare transposed data
         transposed_data = []
         for field, value in zip(fields, row_data):
@@ -162,6 +174,7 @@ def calculate_offer():
 
         # Function to save transposed data to CSV
         save_transposed_to_csv(form_csv_file_path, transposed_data)
+        print(12)
 
         return jsonify({
             'result': offer_str,
@@ -188,24 +201,21 @@ def calculate_financials(user_info, months_free):
 @app.route('/submit', methods=['POST'])
 def submit_form():
     try:
-        user_data = request.json.get('user_data', {})
-        total_payable = request.json.get('total_payable')
-        outcomes_data = request.json.get('outcomes_data', {})
-        url = request.json.get('url')
-        guid = request.json.get('guid')
+        data = request.json
+        print(data)
 
         csv_file_path = os.path.join('data', db_schema_outcomes)
 
         base_row_data = [
-            guid,
-            datetime.now(),
-            url,
-            user_data.get('registration-number', ''),
-            user_data.get('user-renewal-date', ''),
-            user_data.get('user-annual-subs', ''),
-            total_payable,
-            outcomes_data.get('offer', ''),
-            outcomes_data.get('offer-accepted', '')
+            data['guid'],
+            pd.to_datetime(data['currentDatetime']),
+            data['webUrl'],
+            data['registrationNumber'],
+            data['userRenewalDate'],
+            data['userAnnualSubs'],
+            data['totalPayable'],
+            data['customerOffer'],
+            data['customerOfferAccepted']
         ]
 
         save_to_csv(csv_file_path, base_row_data)

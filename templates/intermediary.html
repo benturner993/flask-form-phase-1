@@ -172,23 +172,17 @@
     }
 
     function submitForm() {
-        const formDataUser = {};
-        const formDataOutcomes = {};
-        formInputs.forEach(input => {
-            if (input.form.id === 'user-form') {
-                formDataUser[input.name] = input.value.trim();
-            } else if (input.form.id === 'outcomes-form') {
-                formDataOutcomes[input.name] = input.value.trim();
-            }
-        });
-        const totalPayable = document.getElementById('total_payable').textContent.trim();
 
         const formData = {
-            user_data: formDataUser,
-            outcomes_data: formDataOutcomes,
-            total_payable: totalPayable,
-            url: window.location.href, // Add the current URL to the formData
-            guid: currentGUID
+            guid: currentGUID,
+            currentDatetime: new Date().toISOString(),
+            webUrl: window.location.href,
+            registrationNumber : document.getElementById('registration-number').value,
+            userRenewalDate: document.getElementById('user-renewal-date').value,
+            userAnnualSubs: document.getElementById('user-annual-subs').value,
+            totalPayable: document.getElementById('total_payable').textContent.trim(),
+            customerOffer: document.getElementById('offer').value,
+            customerOfferAccepted: document.getElementById('offer-accepted').value,
         };
 
         fetch('/submit', {
@@ -213,6 +207,8 @@
         });
         formData.url = window.location.href; // Get the current URL
         formData.guid = generateGUID();
+
+        // Set global variable of guid
         currentGUID = formData.guid;
 
         // Hide the calculate button immediately
