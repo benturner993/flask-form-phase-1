@@ -19,5 +19,9 @@ Use the below command to kill PID(s):
 
 Note: PID is always numeric. Ex:- kill -9 2882.
 
+### Run
+
+To run the application use `python app.py` or `flask run -h localhost -p 3000`
+
 ## Date
 Created in 2024Q2.
